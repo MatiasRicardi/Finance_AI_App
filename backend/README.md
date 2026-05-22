@@ -20,27 +20,7 @@ The backend is responsible for authentication, AI provider configuration, secure
 
 This project does not use an ORM.
 
-The backend should use explicit SQL queries. There are two good options:
-
-### Option A: `database/sql`
-
-Use Go's standard `database/sql` package with a MySQL-compatible driver.
-
-This gives full control over SQL queries and keeps the implementation simple.
-
-### Option B: `sqlc`
-
-Use `sqlc` to generate type-safe Go code from SQL queries.
-
-This is still not an ORM. You write SQL manually, and `sqlc` generates Go methods and types from those queries.
-
-Recommended initial approach:
-
-```text
-Migrations: SQL migration files
-Database access: explicit SQL
-No ORM
-```
+The backend should use the standard `database/sql`
 
 ## Responsibilities
 
