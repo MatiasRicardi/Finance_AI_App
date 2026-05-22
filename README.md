@@ -153,15 +153,6 @@ See each application README for details.
 
 Project documentation should live in the `docs/` folder.
 
-Suggested documents:
-
-```text
-docs/mvp-scope.md
-docs/main-user-flow.md
-docs/architecture.md
-docs/api-contracts.md
-```
-
 ## License
 
 MIT
