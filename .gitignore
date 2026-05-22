@@ -1,0 +1,17 @@
+# Node
+node_modules/
+dist/
+
+# Go
+bin/
+*.exe
+*.test
+*.out
+
+# Env
+.env
+.env.*
+
+# OS/editor
+.DS_Store
+.vscode/

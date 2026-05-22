@@ -1,0 +1,10 @@
+{
+  "name": "finance-ai-app-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Define frontend dev script'",
+    "build": "echo 'Define frontend build script'",
+    "test": "echo 'Define frontend test script'"
+  }
+}
