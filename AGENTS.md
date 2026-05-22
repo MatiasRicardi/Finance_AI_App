@@ -159,10 +159,6 @@ backend/README.md
 frontend/README.md
 docs/project-brief.md
 docs/project-summary.md
-docs/mvp-scope.md
-docs/main-user-flow.md
-docs/architecture.md
-docs/api-contracts.md
 ```
 
 If a task changes behavior, update or create the appropriate document.
