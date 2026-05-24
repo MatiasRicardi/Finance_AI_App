@@ -22,7 +22,6 @@ finance_ai_app/
 ├── frontend/
 ├── docs/
 ├── scripts/
-├── docker-compose.yml
 ├── README.md
 └── AGENTS.md
 ```
@@ -72,7 +71,7 @@ Do not implement multi-provider routing unless explicitly requested.
 
 - Go.
 - Chi.
-- MariaDB.
+- MariaDB (hosted on an external server, not local Docker).
 - `database/sql`.
 - SQL migrations.
 - No ORM.
@@ -126,7 +125,6 @@ finance_ai_app/
 │   └── api-contracts.md
 │
 ├── scripts/
-├── docker-compose.yml
 ├── README.md
 └── AGENTS.md
 ```

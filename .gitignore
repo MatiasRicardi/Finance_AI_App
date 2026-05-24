@@ -15,3 +15,5 @@ bin/
 # OS/editor
 .DS_Store
 .vscode/
+backend/go.sum
+frontend/pnpm-lock.yaml

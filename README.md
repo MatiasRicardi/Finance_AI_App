@@ -27,7 +27,6 @@ finance_ai_app/
 ├── frontend/
 ├── docs/
 ├── scripts/
-├── docker-compose.yml
 ├── README.md
 └── .gitignore
 ```
@@ -111,29 +110,24 @@ Text-only OpenAI-compatible APIs are not supported in the first version.
 
 ### Requirements
 
-- Go
+- Go 1.26+
 - Node.js
 - pnpm
-- Docker
-- Docker Compose
-
-### Start Infrastructure
-
-```bash
-docker compose up -d
-```
+- Access to a MariaDB server (configured via environment variables)
 
 ### Start Backend
 
 ```bash
 cd backend
-go run ./cmd/api
+cp .env.example .env   # first time only — fill in your credentials
+export $(cat .env | grep -v '^#' | xargs) && go run ./cmd/api
 ```
 
 ### Start Frontend
 
 ```bash
 cd frontend
+cp .env.example .env   # first time only
 pnpm install
 pnpm dev
 ```
