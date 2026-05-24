@@ -18,29 +18,11 @@ The backend is responsible for authentication, AI provider configuration, secure
 
 ## Database Approach
 
-This project does not use an ORM.
+This project uses Go's standard `database/sql` package with a MySQL-compatible driver.
 
-The backend should use explicit SQL queries. There are two good options:
+SQL queries are written explicitly. There is no ORM and no code generator.
 
-### Option A: `database/sql`
-
-Use Go's standard `database/sql` package with a MySQL-compatible driver.
-
-This gives full control over SQL queries and keeps the implementation simple.
-
-### Option B: `sqlc`
-
-Use `sqlc` to generate type-safe Go code from SQL queries.
-
-This is still not an ORM. You write SQL manually, and `sqlc` generates Go methods and types from those queries.
-
-Recommended initial approach:
-
-```text
-Migrations: SQL migration files
-Database access: explicit SQL
-No ORM
-```
+This gives full control over queries and keeps the implementation simple and readable.
 
 ## Responsibilities
 
@@ -98,46 +80,60 @@ backend/
 Create a `.env` file in the `backend/` directory.
 
 ```env
+# Application
 APP_ENV=development
-HTTP_PORT=8080
 
+# HTTP
+HTTP_PORT=8080
+CORS_ALLOWED_ORIGINS=http://localhost:5173
+
+# Database (MariaDB)
 DATABASE_HOST=localhost
 DATABASE_PORT=3306
 DATABASE_NAME=finance_ai_app
-DATABASE_USER=finance_ai_app
-DATABASE_PASSWORD=finance_ai_app_password
-DATABASE_MAX_OPEN_CONNS=25
-DATABASE_MAX_IDLE_CONNS=25
-DATABASE_CONN_MAX_LIFETIME_MINUTES=5
+DATABASE_USER=finance_user
+DATABASE_PASSWORD=change_me
 
-AUTH_SECRET=change-me
-AUTH_TOKEN_TTL_MINUTES=1440
+# Authentication
+# Generate with: openssl rand -hex 32
+AUTH_SECRET=change_me_to_a_random_32_byte_hex_string
+AUTH_TOKEN_TTL_MINUTES=60
 
-ENCRYPTION_KEY=change-me-32-byte-key
+# Encryption (for AI provider API keys at rest)
+# Generate with: openssl rand -hex 32
+ENCRYPTION_KEY=change_me_to_a_random_32_byte_hex_string
 
-CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:8100
+# File Upload
+MAX_UPLOAD_SIZE_MB=20
+UPLOAD_TEMP_DIR=/tmp/finance-ai-app
 
-MAX_UPLOAD_SIZE_MB=10
-UPLOAD_TEMP_DIR=./tmp/uploads
-
-AI_PROVIDER_TEST_TIMEOUT_SECONDS=60
+# AI Provider
+AI_PROVIDER_TEST_TIMEOUT_SECONDS=15
 AI_EXTRACTION_TIMEOUT_SECONDS=120
 
-LOG_LEVEL=debug
+# Logging
+LOG_LEVEL=info
 ```
 
 ## Local Development
 
-### Install Dependencies
+### Setup
 
 ```bash
-go mod download
+cp .env.example .env
+# Edit .env and fill in your database credentials and secrets
 ```
 
 ### Run the API
 
 ```bash
-go run ./cmd/api
+export $(cat .env | grep -v '^#' | xargs) && go run ./cmd/api
+```
+
+### Build
+
+```bash
+go build ./...
 ```
 
 ### Run Tests
@@ -156,14 +152,16 @@ go test -race ./...
 
 The application uses MariaDB.
 
-Example local connection settings:
+The database is expected to be hosted on an external server. Configure the connection via the environment variables in `.env`.
+
+Required variables:
 
 ```text
-Host: localhost
-Port: 3306
-Database: finance_ai_app
-User: finance_ai_app
-Password: finance_ai_app_password
+DATABASE_HOST
+DATABASE_PORT
+DATABASE_NAME
+DATABASE_USER
+DATABASE_PASSWORD
 ```
 
 ## Migrations
