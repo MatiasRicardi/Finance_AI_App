@@ -10,15 +10,16 @@ import (
 )
 
 // New returns a configured Chi router with common middleware.
-func New(corsOrigins string) http.Handler {
+func New(corsOrigins []string) http.Handler {
 	r := chi.NewRouter()
 
 	r.Use(middleware.RequestID)
-	r.Use(middleware.RealIP)
+	r.Use(middleware.ClientIPFromRemoteAddr)
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
+
 	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{corsOrigins},
+		AllowedOrigins:   corsOrigins,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-Request-ID"},
 		AllowCredentials: true,
@@ -33,5 +34,8 @@ func New(corsOrigins string) http.Handler {
 func healthHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"status": "ok"})
+
+	if err := json.NewEncoder(w).Encode(map[string]string{"status": "ok"}); err != nil {
+		http.Error(w, "failed to encode response", http.StatusInternalServerError)
+	}
 }
