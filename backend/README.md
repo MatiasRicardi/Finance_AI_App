@@ -20,9 +20,7 @@ The backend is responsible for authentication, AI provider configuration, secure
 
 This project uses Go's standard `database/sql` package with a MySQL-compatible driver.
 
-SQL queries are written explicitly. There is no ORM and no code generator.
-
-This gives full control over queries and keeps the implementation simple and readable.
+The backend should use the standard `database/sql`
 
 ## Responsibilities
 
